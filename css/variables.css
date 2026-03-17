@@ -1,0 +1,84 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── DARK THEME (default) ── */
+:root, [data-theme="dark"] {
+--bg:#07090f; --p1:#0c0e18; --p2:#10131e; --p3:#141828;
+--bd:#1c2138; --bd2:#242b42; --bd3:#2c3450;
+--tx:#b0bcd8; --mu:#3a4260; --mu2:#505878; --acc:#e0dac4;
+
+/* Segment colours */
+--sys:#e05555; --tls:#c8b530; --rag:#48a870; --mem:#32c0a0;
+--mcp:#3898dc; --fil:#5068e0; --usr:#7258dc; --thi:#b838b8;
+--tcl:#e09838; --trs:#40b8b8; --ast:#dc5088;
+--ok:#48a870; --warn:#e09838; --danger:#e05555;
+
+/* Theme-specific chrome colours */
+--gen-bg:#1a1530; --out-bg:#131e30; --lseg-out-bg:#182438;
+--overlay-hover:rgba(255,255,255,.028); --overlay-sel:rgba(255,255,255,.045);
+--divider-col:rgba(255,255,255,.13); --bracket-col:rgba(255,255,255,.38);
+--seg-overlay:rgba(255,255,255,.12); --tc-overlay:rgba(255,255,255,.1);
+--code-bg:rgba(255,255,255,.07);
+
+/* Bubble text */
+--bub-user-tx:#a898e0; --bub-ast-tx:#dc8098; --bub-thi-tx:#b878c8;
+--bub-tcl-tx:#d0a860;  --bub-trs-tx:#60b8b8; --bub-sys-tx:#d88080;
+--bub-gen-tx:rgba(184,56,184,.65);
+
+/* Toggle icon */
+--toggle-icon:"☀";
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+--bg:#f0ede6; --p1:#faf9f6; --p2:#f2f0eb; --p3:#e8e5de;
+--bd:#d5d1c8; --bd2:#c4c0b6; --bd3:#b4b0a6;
+--tx:#1e2135; --mu:#9098b4; --mu2:#606888; --acc:#1e2135;
+
+--gen-bg:#ede8f8; --out-bg:#e0e8f6; --lseg-out-bg:#dce8f8;
+--overlay-hover:rgba(0,0,0,.03); --overlay-sel:rgba(0,0,0,.05);
+--divider-col:rgba(0,0,0,.15); --bracket-col:rgba(0,0,0,.3);
+--seg-overlay:rgba(0,0,0,.07); --tc-overlay:rgba(0,0,0,.06);
+--code-bg:rgba(0,0,0,.06);
+
+/* Slightly deeper segment colours for contrast on light bg */
+--sys:#c83838; --tls:#a08c10; --rag:#2a8050; --mem:#189880;
+--mcp:#1470b8; --fil:#2848c8; --usr:#4830b8; --thi:#8818a0;
+--tcl:#b87010; --trs:#189898; --ast:#b82870;
+--ok:#2a8050; --warn:#b87010; --danger:#c83838;
+
+/* Bubble text – darker for readability on light bg */
+--bub-user-tx:#4838a8; --bub-ast-tx:#a02860; --bub-thi-tx:#781890;
+--bub-tcl-tx:#906010;  --bub-trs-tx:#1080a0; --bub-sys-tx:#a02828;
+--bub-gen-tx:rgba(120,40,150,.8);
+
+--toggle-icon:"☾";
+}
+
+/* Auto-detect system preference when no explicit data-theme set */
+@media (prefers-color-scheme: light) {
+:root:not([data-theme="dark"]) {
+--bg:#f0ede6; --p1:#faf9f6; --p2:#f2f0eb; --p3:#e8e5de;
+--bd:#d5d1c8; --bd2:#c4c0b6; --bd3:#b4b0a6;
+--tx:#1e2135; --mu:#9098b4; --mu2:#606888; --acc:#1e2135;
+--gen-bg:#ede8f8; --out-bg:#e0e8f6; --lseg-out-bg:#dce8f8;
+--overlay-hover:rgba(0,0,0,.03); --overlay-sel:rgba(0,0,0,.05);
+--divider-col:rgba(0,0,0,.15); --bracket-col:rgba(0,0,0,.3);
+--seg-overlay:rgba(0,0,0,.07); --tc-overlay:rgba(0,0,0,.06);
+--code-bg:rgba(0,0,0,.06);
+--sys:#c83838; --tls:#a08c10; --rag:#2a8050; --mem:#189880;
+--mcp:#1470b8; --fil:#2848c8; --usr:#4830b8; --thi:#8818a0;
+--tcl:#b87010; --trs:#189898; --ast:#b82870;
+--ok:#2a8050; --warn:#b87010; --danger:#c83838;
+--bub-user-tx:#4838a8; --bub-ast-tx:#a02860; --bub-thi-tx:#781890;
+--bub-tcl-tx:#906010;  --bub-trs-tx:#1080a0; --bub-sys-tx:#a02828;
+--bub-gen-tx:rgba(120,40,150,.8);
+--toggle-icon:"☾";
+}
+}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .2s ease both}
+
+@media (prefers-color-scheme: dark) {
+:root:not([data-theme="light"]) { color-scheme: dark; }
+}
