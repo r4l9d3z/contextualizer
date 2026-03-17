@@ -52,9 +52,6 @@ export function renderLinbar(sc){
     if(!v) continue;
     const seg=document.createElement('div');
     seg.className='lseg'+(state.HK===k?' hl':'');
-    if(barHasTurn) seg.classList.add('in-turn'); // infra always dim when turn selected — wait, no: infra should be dim when a conversation turn is selected
-    // Actually: when a conversation turn is selected, infra should dim
-    if(barHasTurn) seg.classList.remove('in-turn');
     const w=(v/TOTAL)*100;
     seg.style.cssText=`width:${w}%;background:${T[k]?.color||'#888'}`;
     const lbl=document.createElement('div'); lbl.className='ll'; lbl.textContent=T[k]?.name||k; seg.appendChild(lbl);

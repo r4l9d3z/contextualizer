@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master, claude/interactive-context-window-Gyuil]
+    branches: [main]
 
 permissions:
   contents: write
@@ -55,16 +55,16 @@ jobs:
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
           FULL_SHA=${GITHUB_SHA}
-          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
-          COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
-          COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=format:"%Y-%m-%d %H:%M:%S UTC")
+          COMMIT_MSG=$(git log -1 "${GITHUB_SHA}" --pretty=format:"%s")
+          COMMIT_AUTHOR=$(git log -1 "${GITHUB_SHA}" --pretty=format:"%an")
+          COMMIT_DATE=$(git log -1 "${GITHUB_SHA}" --pretty=format:"%ad" --date=format:"%Y-%m-%d %H:%M:%S UTC")
 
           # Collect commits since last tag (or all if no tags exist)
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          LAST_TAG=$(git describe --tags --abbrev=0 "${GITHUB_SHA}" 2>/dev/null || echo "")
           if [ -n "$LAST_TAG" ]; then
-            CHANGELOG=$(git log "${LAST_TAG}..HEAD" --pretty=format:"- %s (%an, %ad)" --date=format:"%Y-%m-%d" | head -20)
+            CHANGELOG=$(git log "${LAST_TAG}..${GITHUB_SHA}" --pretty=format:"- %s (%an, %ad)" --date=format:"%Y-%m-%d" | head -20)
           else
-            CHANGELOG=$(git log --pretty=format:"- %s (%an, %ad)" --date=format:"%Y-%m-%d" | head -20)
+            CHANGELOG=$(git log "${GITHUB_SHA}" --pretty=format:"- %s (%an, %ad)" --date=format:"%Y-%m-%d" | head -20)
           fi
 
           # Write multi-line notes to file to avoid quoting issues
