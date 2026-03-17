@@ -8,7 +8,7 @@ import { selectTurn } from '../interactions.js';
 export function renderIxPanel() {
   const body = document.getElementById('ixBody');
   if (!body) return;
-  let html = '';
+  let html = '<div class="ix-body">';
 
   // Infrastructure section
   html += '<div class="ix-section"><div class="ix-section-title">Infrastructure</div>';
@@ -83,6 +83,7 @@ export function renderIxPanel() {
   html += '<div style="padding-top:4px;border-top:1px solid var(--bd);margin-top:4px;">';
   html += '<button class="ix-btn danger" id="ixReset" style="width:100%;">Reset</button>';
   html += '</div>';
+  html += '</div>'; // close ix-body
 
   body.innerHTML = html;
   wireIxPanel();

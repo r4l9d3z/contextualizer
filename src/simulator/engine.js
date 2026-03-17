@@ -188,7 +188,7 @@ function applyStep(step) {
       // Start a new turn with just the user message
       IX.turns.push({
         user: step.tokens,
-        assistant: 0,
+        assistant: null,
         thinking: 0,
         toolcall: 0,
         toolres: 0,
