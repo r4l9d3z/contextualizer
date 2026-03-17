@@ -30,17 +30,6 @@ export function renderLinbar(sc){
 
   // Build bar
   const bar=document.getElementById('linbar'); bar.innerHTML='';
-  const activeTurnSegs=new Set();
-
-  // Track turn boundaries for bracket
-  let turnStart=infra/TOTAL*100;
-  let bracketLeft=turnStart, bracketW=0;
-
-  // Determine which keys belong to selected turn
-  if(state.HT!=null&&state.HT>=0){
-    const turn=sc.turns[state.HT];
-    turnChunks(turn,state.HT===sc.turns.length-1).forEach(c=>{ if(c.key) activeTurnSegs.add(c.key+'_'+state.HT); });
-  }
 
   // Whether any turn is active in bar
   const barHasTurn=state.HT!=null&&state.HT>=0;

@@ -48,7 +48,7 @@ jobs:
           npm version ${{ steps.tag.outputs.version }} --no-git-tag-version
           git add package.json package-lock.json
           git commit -m "chore: bump version to ${{ steps.tag.outputs.version }} [skip ci]"
-          git push origin master
+          git push origin main
 
       - name: Generate release notes
         id: notes
