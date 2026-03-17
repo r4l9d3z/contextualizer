@@ -339,6 +339,86 @@ transition:all .12s;
 .li.hl{border-color:currentColor}
 .ldot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 
+/* ── INTERACTIVE CONTROLS ── */
+.ix-body{padding:8px 7px 12px}
+.ix-section{margin-bottom:10px}
+.ix-section-title{
+font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(–mu);padding:4px 4px 3px;margin-bottom:4px;
+display:flex;align-items:center;gap:6px;
+}
+.ix-section-title::after{content:'';flex:1;height:1px;background:var(–bd)}
+.ix-component{
+display:flex;flex-direction:column;gap:3px;
+padding:5px 7px;border-radius:5px;border:1px solid var(–bd);
+margin-bottom:3px;background:var(–bg);transition:border-color .15s;
+}
+.ix-component.active{border-color:var(–bd3)}
+.ix-comp-header{display:flex;align-items:center;gap:5px;cursor:pointer}
+.ix-comp-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.ix-comp-name{font-size:.6rem;color:var(–tx);flex:1}
+.ix-comp-tok{font-size:.56rem;color:var(–mu2);text-align:right}
+.ix-toggle{
+appearance:none;-webkit-appearance:none;
+width:24px;height:12px;border-radius:6px;
+background:var(–bd2);border:none;cursor:pointer;
+position:relative;transition:background .2s;flex-shrink:0;
+}
+.ix-toggle:checked{background:var(–acc)}
+.ix-toggle::after{
+content:'';position:absolute;top:2px;left:2px;
+width:8px;height:8px;border-radius:50%;
+background:var(–bg);transition:transform .2s;
+}
+.ix-toggle:checked::after{transform:translateX(12px)}
+.ix-presets{display:flex;gap:2px;flex-wrap:wrap;margin-top:3px}
+.ix-preset{
+font-family:'JetBrains Mono',monospace;
+font-size:.52rem;padding:2px 6px;border-radius:3px;
+border:1px solid var(–bd);background:none;color:var(–mu2);
+cursor:pointer;transition:all .12s;
+}
+.ix-preset:hover{border-color:var(–mu2);color:var(–tx)}
+.ix-preset.on{border-color:var(–acc);color:var(–acc)}
+.ix-custom-input{
+font-family:'JetBrains Mono',monospace;font-size:.57rem;
+width:100%;padding:3px 6px;border-radius:3px;
+border:1px solid var(–bd);background:var(–p2);color:var(–tx);
+margin-top:3px;box-sizing:border-box;
+}
+.ix-custom-input:focus{outline:none;border-color:var(–mu2)}
+.ix-slider-row{display:flex;align-items:center;gap:6px;margin-top:3px}
+.ix-slider{flex:1;accent-color:var(–mcp);height:3px;cursor:pointer}
+.ix-slider-val{font-size:.57rem;color:var(–tx);width:36px;text-align:right;flex-shrink:0}
+.ix-msg-area{
+font-family:'JetBrains Mono',monospace;font-size:.6rem;
+width:100%;padding:5px 7px;border-radius:5px;
+border:1px solid var(–bd);background:var(–p2);color:var(–tx);
+resize:vertical;min-height:54px;transition:border-color .15s;box-sizing:border-box;
+}
+.ix-msg-area:focus{outline:none;border-color:var(–mu2)}
+.ix-char-hint{font-size:.5rem;color:var(–mu);text-align:right;margin-top:2px}
+.ix-btn{
+font-family:'JetBrains Mono',monospace;font-size:.55rem;
+padding:4px 9px;border-radius:4px;cursor:pointer;
+border:1px solid var(–bd);background:var(–p2);color:var(–tx);
+transition:all .13s;
+}
+.ix-btn:hover{border-color:var(–mu2)}
+.ix-btn.primary{border-color:var(–acc);color:var(–acc)}
+.ix-btn.primary:hover{background:rgba(224,218,196,.08)}
+.ix-btn.danger{border-color:rgba(224,85,85,.4);color:var(–danger)}
+.ix-btn.danger:hover{background:rgba(224,85,85,.06)}
+.ix-btn:disabled{opacity:.35;cursor:default}
+.ix-btn-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.ix-post-actions{
+padding:6px 8px;border:1px solid var(–bd);border-radius:5px;
+background:var(–p2);margin-top:4px;
+}
+.ix-post-label{font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(–mu);margin-bottom:4px}
+.ix-size-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:3px}
+.ix-size-label{font-size:.55rem;color:var(–mu2)}
+
 /* ── RIGHT PANEL (scrollable) ── */
 .right-pn{background:var(–p1);border:1px solid var(–bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;position:sticky;top:14px;max-height:calc(100vh - 28px)}
 .rp{
@@ -503,9 +583,12 @@ h1{font-size:1.4rem}
 
   <!-- LEFT: Scenarios -->
 
-  <div class="pn">
+  <div class="pn" style="display:flex;flex-direction:column;overflow:hidden;">
     <div class="ph">Scenarios</div>
-    <div class="slist" id="slist"></div>
+    <div class="slist" id="slist" style="flex-shrink:0;"></div>
+    <div id="ixPanel" style="display:none;border-top:1px solid var(–bd);overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(–bd2) transparent;">
+      <div id="ixBody"></div>
+    </div>
   </div>
 
   <!-- CENTER -->
@@ -562,7 +645,7 @@ h1{font-size:1.4rem}
   <div class="right-pn">
     <div class="ph">
       <span id="rpTitle">Token Budget</span>
-      <span id="rpHint" style="font-size:.48rem;font-style:italic;color:var(--mu)">click turn or segment</span>
+      <span id="rpHint" style="font-size:.48rem;font-style:italic;color:var(–mu)">click turn or segment</span>
     </div>
     <div class="rp" id="rp"></div>
   </div>
@@ -1211,6 +1294,49 @@ const SCENARIOS = [
 let SC=null, HK=null, HT=null;
 
 /* ════════════════════════════════════════
+   INTERACTIVE STATE
+   ════════════════════════════════════════ */
+const PRESETS={small:500,medium:2000,large:8000,xl:20000};
+const PRESET_LABELS=[
+  {k:'small',v:500,label:'S'},
+  {k:'medium',v:2000,label:'M'},
+  {k:'large',v:8000,label:'L'},
+  {k:'xl',v:20000,label:'XL'},
+];
+const INFRA_COMPONENTS=[
+  {key:'system', label:'System Prompt',    color:'#e05555'},
+  {key:'tools',  label:'Tool Definitions', color:'#c8b530'},
+  {key:'rag',    label:'RAG Chunks',       color:'#48a870'},
+  {key:'memory', label:'Retrieved Memory', color:'#32c0a0'},
+  {key:'mcp',    label:'MCP Server Data',  color:'#3898dc'},
+];
+const IX={
+  id:'interactive',label:'Interactive Build',sub:'Build your own context window',
+  infra:{system:0,tools:0,rag:0,memory:0,mcp:0},
+  infraPreset:{system:null,tools:null,rag:null,memory:null,mcp:null},
+  maxOut:4000,
+  turns:[],
+  get infraDesc(){
+    return{
+      title:'Your Infrastructure',
+      desc:'Infrastructure you enabled. Each component is injected at the start of every API call before any conversation turns.',
+      example:this._buildInfraExample(),
+      note:`Total infrastructure: <b>${fmt(Object.values(this.infra).reduce((a,v)=>a+v,0))} tokens</b> — paid on every API call.`
+    };
+  },
+  _buildInfraExample(){
+    const ex=[];
+    if(this.infra.system)  ex.push({type:'system',      text:`System prompt — ${fmt(this.infra.system)} tokens`});
+    if(this.infra.tools)   ex.push({type:'tool-result', text:`Tool definitions — ${fmt(this.infra.tools)} tokens`});
+    if(this.infra.rag)     ex.push({type:'tool-result', text:`RAG chunks — ${fmt(this.infra.rag)} tokens`});
+    if(this.infra.memory)  ex.push({type:'tool-result', text:`Retrieved memory — ${fmt(this.infra.memory)} tokens`});
+    if(this.infra.mcp)     ex.push({type:'tool-result', text:`MCP server data — ${fmt(this.infra.mcp)} tokens`});
+    if(!ex.length)         ex.push({type:'system',text:'No infrastructure components enabled yet.'});
+    return ex;
+  }
+};
+
+/* ════════════════════════════════════════
    HELPERS
    ════════════════════════════════════════ */
 const fmt=n=>n>=10000?(n/1000).toFixed(0)+'k':n>=1000?(n/1000).toFixed(1)+'k':String(n);
@@ -1254,11 +1380,69 @@ function escHtml(s){
 }
 
 /* ════════════════════════════════════════
+   INTERACTIVE HELPERS
+   ════════════════════════════════════════ */
+function makeTurnMeta(idx,turn){
+  const segs=[];
+  if(turn.files)    segs.push(`file attachment (${fmt(turn.files)} tok)`);
+  if(turn.user)     segs.push(`user message (${fmt(turn.user)} tok)`);
+  if(turn.thinking) segs.push(`thinking block (${fmt(turn.thinking)} tok)`);
+  if(turn.toolcall) segs.push(`tool call (${fmt(turn.toolcall)} tok)`);
+  if(turn.toolres)  segs.push(`tool result (${fmt(turn.toolres)} tok)`);
+  const complete=!isGen(turn);
+  if(complete)      segs.push(`assistant response (${fmt(turn.assistant)} tok)`);
+  const total=turnTok(turn);
+  const ex=[];
+  if(turn.files)    ex.push({type:'tool-result',text:`[Attached file — ${fmt(turn.files)} tokens]`});
+  if(turn.user)     ex.push({type:'user',text:`User message — ${fmt(turn.user)} tokens (~${turn.user*4} characters)`});
+  if(turn.thinking) ex.push({type:'thinking',text:`[Extended thinking — ${fmt(turn.thinking)} tokens of internal reasoning]`});
+  if(turn.toolcall) ex.push({type:'tool-call',text:`[Tool call — ${fmt(turn.toolcall)} tokens]`});
+  if(turn.toolres)  ex.push({type:'tool-result',text:`[Tool result — ${fmt(turn.toolres)} tokens]`});
+  if(complete)      ex.push({type:'assistant',text:`[Assistant response — ${fmt(turn.assistant)} tokens]`});
+  else              ex.push({type:'generating',text:'← Model generating response (not yet in context)'});
+  turn.title=`Turn ${idx+1} — ${complete?'Completed':'Generating'}`;
+  turn.desc=`${complete?'Completed':'Active'} turn with: ${segs.join(', ')}.`;
+  turn.fullDesc=`Turn ${idx+1} you built interactively. Contains: ${segs.join('; ')}. Total: ${fmt(total)} tokens. ${complete?'This turn is part of conversation history and will be re-sent on every future API call.':'The response is still being generated — not in context yet.'}`;
+  turn.example=ex;
+  turn.note=`This turn contributes <b>${fmt(total)} tokens</b> — <b>${pctStr(total,TOTAL)}</b> of the 128k window. ${complete?'Re-transmitted on every future API call.':''}`;
+}
+
+function ixReset(){
+  IX.infra={system:0,tools:0,rag:0,memory:0,mcp:0};
+  IX.infraPreset={system:null,tools:null,rag:null,memory:null,mcp:null};
+  IX.maxOut=4000;
+  IX.turns=[];
+  if(SC?.id==='interactive'){SC=IX; ixRerender();}
+}
+
+function rerender(){
+  if(!SC) return;
+  renderLinbar(SC); renderTurns(SC); renderLegend(); renderRight();
+}
+
+function ixRerender(){
+  renderIxPanel(); rerender();
+}
+
+function ixAddSegmentToLastTurn(key,defaultTok){
+  const turn=IX.turns[IX.turns.length-1];
+  turn[key]=(turn[key]||0)+defaultTok;
+  makeTurnMeta(IX.turns.length-1,turn);
+  ixRerender();
+}
+
+/* ════════════════════════════════════════
    RENDER: SCENARIOS
    ════════════════════════════════════════ */
 function renderScenarios(){
   const el=document.getElementById('slist');
-  el.innerHTML=SCENARIOS.map(s=>`
+  const ixBtn=`
+    <button class="sb ${SC?.id==='interactive'?'on':''}" data-id="interactive">
+      <span class="l">✏ Interactive Build</span>
+      <span class="s">Build your own context window</span>
+      <span class="sb-dot"></span>
+    </button>`;
+  el.innerHTML=ixBtn+SCENARIOS.map(s=>`
     <button class="sb ${SC?.id===s.id?'on':''}" data-id="${s.id}">
       <span class="l">${s.label}</span>
       <span class="s">${s.sub}</span>
@@ -1285,10 +1469,13 @@ function renderLinbar(sc){
   pEl.textContent=(ratio*100).toFixed(1)+'%'; pEl.style.color=uc(ratio);
 
   // State note
-  const last=sc.turns[sc.turns.length-1], gen=isGen(last);
+  const last=sc.turns.length?sc.turns[sc.turns.length-1]:null;
+  const gen=last?isGen(last):false;
   const note=document.getElementById('stateNote');
   note.className='state-note '+(gen?'generating':'idle');
-  note.innerHTML=gen
+  note.innerHTML=!last
+    ?`<span class="sn-icon">○</span><span>No turns yet — add infrastructure and messages using the controls on the left.</span>`
+    :gen
     ?`<span class="sn-icon">▶</span><span>Model is generating — output is <b>NOT in context yet</b>. ${fmt(sc.maxOut)} token output budget reserved. It enters context on the next API call.</span>`
     :`<span class="sn-icon">✓</span><span>All turns complete. Next message triggers a new API call sending all <b>${fmt(used)} tokens</b> of context.</span>`;
 
@@ -1585,7 +1772,7 @@ function renderBudget(panel){
 
   const totalW=used+SC.maxOut, freeAmt=TOTAL-totalW, r=totalW/TOTAL;
   html+=`<div class="bk-summary">
-    <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(--mu2);margin-bottom:4px">
+    <div style="display:flex;justify-content:space-between;font-size:.58rem;color:var(–mu2);margin-bottom:4px">
       <span>Input + output budget</span>
       <span style="color:${uc(r)};font-weight:600">${(r*100).toFixed(1)}%</span>
     </div>
@@ -1734,7 +1921,7 @@ function renderSegDetail(panel){
     <div class="sd-tok">${inWindow&&total?fmt(total)+' tokens · '+pctStr(total,TOTAL)+' of window':'not yet in context'}${count>1?' · '+count+' occurrences':''}</div>
     <div class="sd-badges">
       <span class="sd-badge" style="color:${d.color};border-color:${d.color}30">${d.badge}</span>
-      <span class="sd-badge" style="color:var(--mu2);border-color:var(--mu)25">${d.who}</span>
+      <span class="sd-badge" style="color:var(–mu2);border-color:var(–mu)25">${d.who}</span>
     </div>
     <div class="sd-desc">${d.desc}</div>
     <div class="sd-items">${d.items.map(it=>`
@@ -1748,10 +1935,197 @@ function renderSegDetail(panel){
 }
 
 /* ════════════════════════════════════════
+   INTERACTIVE PANEL
+   ════════════════════════════════════════ */
+function renderIxPanel(){
+  const body=document.getElementById('ixBody');
+  if(!body) return;
+  let html='';
+
+  // ── Infrastructure ──
+  html+=`<div class="ix-section"><div class="ix-section-title">Infrastructure</div>`;
+  INFRA_COMPONENTS.forEach(({key,label,color})=>{
+    const tok=IX.infra[key], active=tok>0, preset=IX.infraPreset[key];
+    html+=`<div class="ix-component ${active?'active':''}" data-comp="${key}">
+      <div class="ix-comp-header">
+        <div class="ix-comp-dot" style="background:${color};opacity:${active?1:.35}"></div>
+        <span class="ix-comp-name">${label}</span>
+        <span class="ix-comp-tok">${active?fmt(tok)+'&nbsp;tok':''}</span>
+        <input type="checkbox" class="ix-toggle" data-comp-toggle="${key}" ${active?'checked':''}>
+      </div>`;
+    if(active){
+      html+=`<div class="ix-presets">`;
+      PRESET_LABELS.forEach(p=>{
+        html+=`<button class="ix-preset ${preset===p.k?'on':''}" data-comp-preset="${key}" data-preset="${p.k}">${p.label}&nbsp;<span style="opacity:.6">${fmt(p.v)}</span></button>`;
+      });
+      html+=`</div><input type="number" class="ix-custom-input" placeholder="Custom token count" value="${preset?'':tok}" data-comp-custom="${key}" min="1" max="128000">`;
+    }
+    html+=`</div>`;
+  });
+  html+=`</div>`;
+
+  // ── Output Budget ──
+  html+=`<div class="ix-section">
+    <div class="ix-section-title">Output Budget (max_tokens)</div>
+    <div class="ix-slider-row">
+      <input type="range" class="ix-slider" id="ixMaxOut" min="256" max="32000" step="256" value="${IX.maxOut}">
+      <span class="ix-slider-val" id="ixMaxOutVal">${fmt(IX.maxOut)}</span>
+    </div>
+  </div>`;
+
+  // ── Conversation ──
+  const hasTurns=IX.turns.length>0;
+  const lastTurn=hasTurns?IX.turns[IX.turns.length-1]:null;
+  const showPostActions=lastTurn&&lastTurn.user>0&&isGen(lastTurn);
+
+  html+=`<div class="ix-section"><div class="ix-section-title">Conversation</div>`;
+
+  if(!showPostActions){
+    html+=`<textarea class="ix-msg-area" id="ixMsgArea" placeholder="Type user message…" rows="3"></textarea>
+      <div class="ix-char-hint" id="ixCharHint">0 chars ≈ 0 tokens</div>
+      <div class="ix-btn-row">
+        <button class="ix-btn primary" id="ixSendBtn">Send →</button>
+        ${hasTurns?`<button class="ix-btn danger" id="ixRemoveBtn">Remove last turn</button>`:''}
+      </div>`;
+  }
+
+  if(showPostActions){
+    html+=`<div class="ix-post-actions">
+      <div class="ix-post-label">Turn ${IX.turns.length} — choose next step</div>
+      <div class="ix-btn-row">
+        <button class="ix-btn" id="ixAddThinking">+ Thinking</button>
+        <button class="ix-btn" id="ixAddToolCall">+ Tool Call</button>
+        <button class="ix-btn" id="ixAddFile">+ File</button>
+      </div>
+      <div class="ix-size-row" style="margin-top:6px;">
+        <span class="ix-size-label">Generate response:</span>
+        ${PRESET_LABELS.map(p=>`<button class="ix-btn" data-gen-preset="${p.k}">${p.label}&nbsp;<span style="opacity:.6">${fmt(p.v)}</span></button>`).join('')}
+      </div>
+      <div class="ix-btn-row" style="margin-top:3px;">
+        <button class="ix-btn danger" id="ixRemoveBtn">Remove last turn</button>
+      </div>
+    </div>`;
+  }
+  html+=`</div>`;
+
+  // ── Reset ──
+  html+=`<div style="padding-top:4px;border-top:1px solid var(–bd);margin-top:4px;">
+    <button class="ix-btn danger" id="ixReset" style="width:100%;">Reset</button>
+  </div>`;
+
+  body.innerHTML=html;
+  wireIxPanel();
+}
+
+function wireIxPanel(){
+  // Toggle infrastructure on/off
+  document.querySelectorAll('[data-comp-toggle]').forEach(cb=>{
+    cb.addEventListener('change',e=>{
+      const key=e.target.dataset.compToggle;
+      if(e.target.checked){
+        IX.infra[key]=PRESETS.small;
+        IX.infraPreset[key]='small';
+      } else {
+        IX.infra[key]=0;
+        IX.infraPreset[key]=null;
+      }
+      ixRerender();
+    });
+  });
+
+  // Preset size buttons
+  document.querySelectorAll('[data-comp-preset]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const key=btn.dataset.compPreset, preset=btn.dataset.preset;
+      IX.infra[key]=PRESETS[preset];
+      IX.infraPreset[key]=preset;
+      ixRerender();
+    });
+  });
+
+  // Custom token inputs (update center only to preserve focus)
+  document.querySelectorAll('[data-comp-custom]').forEach(inp=>{
+    inp.addEventListener('input',()=>{
+      const key=inp.dataset.compCustom, val=parseInt(inp.value,10);
+      if(!isNaN(val)&&val>0){
+        IX.infra[key]=val;
+        IX.infraPreset[key]=null;
+        rerender();
+      }
+    });
+  });
+
+  // Max tokens slider (update center only to preserve drag)
+  const slider=document.getElementById('ixMaxOut');
+  if(slider){
+    slider.addEventListener('input',()=>{
+      IX.maxOut=parseInt(slider.value,10);
+      document.getElementById('ixMaxOutVal').textContent=fmt(IX.maxOut);
+      rerender();
+    });
+  }
+
+  // Textarea live hint
+  const textarea=document.getElementById('ixMsgArea');
+  if(textarea){
+    textarea.addEventListener('input',()=>{
+      const chars=textarea.value.length, toks=Math.ceil(chars/4);
+      document.getElementById('ixCharHint').textContent=`${chars} chars ≈ ${fmt(toks)} tokens`;
+    });
+    document.getElementById('ixSendBtn')?.addEventListener('click',()=>{
+      const text=textarea.value.trim();
+      if(!text) return;
+      const toks=Math.ceil(text.length/4);
+      const turn={user:toks,assistant:null,files:0,thinking:0,toolcall:0,toolres:0};
+      makeTurnMeta(IX.turns.length,turn);
+      IX.turns.push(turn);
+      ixRerender();
+    });
+  }
+
+  // Post-turn actions
+  document.getElementById('ixAddThinking')?.addEventListener('click',()=>{
+    ixAddSegmentToLastTurn('thinking',PRESETS.medium);
+  });
+  document.getElementById('ixAddToolCall')?.addEventListener('click',()=>{
+    const turn=IX.turns[IX.turns.length-1];
+    turn.toolcall=(turn.toolcall||0)+PRESETS.small;
+    turn.toolres=(turn.toolres||0)+PRESETS.medium;
+    makeTurnMeta(IX.turns.length-1,turn);
+    ixRerender();
+  });
+  document.getElementById('ixAddFile')?.addEventListener('click',()=>{
+    ixAddSegmentToLastTurn('files',PRESETS.medium);
+  });
+
+  // Generate response
+  document.querySelectorAll('[data-gen-preset]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const turn=IX.turns[IX.turns.length-1];
+      turn.assistant=PRESETS[btn.dataset.genPreset];
+      makeTurnMeta(IX.turns.length-1,turn);
+      ixRerender();
+    });
+  });
+
+  // Remove last turn
+  document.getElementById('ixRemoveBtn')?.addEventListener('click',()=>{
+    if(IX.turns.length>0){ IX.turns.pop(); ixRerender(); }
+  });
+
+  // Reset
+  document.getElementById('ixReset')?.addEventListener('click',ixReset);
+}
+
+/* ════════════════════════════════════════
    INTERACTIONS
    ════════════════════════════════════════ */
 function select(id){
-  SC=SCENARIOS.find(s=>s.id===id); HK=null; HT=null;
+  SC=(id==='interactive')?IX:SCENARIOS.find(s=>s.id===id);
+  HK=null; HT=null;
+  const ixPanel=document.getElementById('ixPanel');
+  if(ixPanel) ixPanel.style.display=(id==='interactive')?'block':'none';
+  if(id==='interactive') renderIxPanel();
   renderScenarios(); renderLinbar(SC); renderTurns(SC); renderLegend(); renderRight();
 }
 function selectKey(key){
