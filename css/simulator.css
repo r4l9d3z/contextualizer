@@ -1,0 +1,180 @@
+/* ── SIMULATOR PANEL ── */
+
+.sim-body { padding: 8px 7px 12px; }
+
+.sim-section { margin-bottom: 10px; }
+
+.sim-section-title {
+  font-size: .48rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--mu);
+  padding: 4px 4px 3px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sim-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bd);
+}
+
+/* Prompt textarea */
+.sim-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--bd);
+  background: var(--p2);
+  color: var(--tx);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color .15s;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+.sim-prompt:focus {
+  outline: none;
+  border-color: var(--mu2);
+}
+
+/* Options */
+.sim-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .6rem;
+  color: var(--tx);
+  cursor: pointer;
+  padding: 2px 0;
+  margin-bottom: 5px;
+}
+.sim-option input[type="checkbox"] {
+  accent-color: var(--acc);
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+
+/* Speed selector */
+.sim-speed-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+.sim-speed-label {
+  font-size: .57rem;
+  color: var(--mu2);
+  flex-shrink: 0;
+}
+.sim-speed-btns {
+  display: flex;
+  gap: 3px;
+}
+.sim-speed-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .52rem;
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--bd);
+  background: none;
+  color: var(--mu2);
+  cursor: pointer;
+  transition: all .12s;
+}
+.sim-speed-btn:hover { border-color: var(--mu2); color: var(--tx); }
+.sim-speed-btn.on    { border-color: var(--acc); color: var(--acc); }
+
+/* Action buttons */
+.sim-btn-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.sim-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--bd);
+  background: var(--p2);
+  color: var(--tx);
+  transition: all .13s;
+}
+.sim-btn:hover { border-color: var(--mu2); }
+.sim-btn.primary { border-color: var(--acc); color: var(--acc); }
+.sim-btn.primary:hover { background: rgba(224,218,196,.08); }
+.sim-btn.danger { border-color: rgba(224,85,85,.4); color: var(--danger); }
+.sim-btn.danger:hover { background: rgba(224,85,85,.06); }
+.sim-btn:disabled { opacity: .35; cursor: default; pointer-events: none; }
+
+/* Status line */
+.sim-status {
+  font-size: .58rem;
+  line-height: 1.55;
+  padding: 5px 9px;
+  border-radius: 5px;
+  margin-top: 4px;
+}
+.sim-status--running {
+  color: var(--warn);
+  background: rgba(208,144,48,.08);
+  border: 1px solid rgba(208,144,48,.22);
+}
+.sim-status--done {
+  color: var(--ok);
+  background: rgba(72,168,112,.08);
+  border: 1px solid rgba(72,168,112,.22);
+}
+.sim-status--idle,
+.sim-status--warn {
+  color: var(--mu2);
+  background: var(--p2);
+  border: 1px solid var(--bd);
+}
+.sim-status--error {
+  color: var(--danger);
+  background: rgba(224,85,85,.06);
+  border: 1px solid rgba(224,85,85,.25);
+}
+
+/* Available tools list */
+.sim-tools { display: flex; flex-direction: column; gap: 5px; }
+.sim-tool {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 5px 7px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  background: var(--bg);
+}
+.sim-tool-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.sim-tool-info { display: flex; flex-direction: column; gap: 1px; }
+.sim-tool-name { font-size: .6rem; color: var(--tx); font-weight: 500; }
+.sim-tool-desc { font-size: .54rem; color: var(--mu2); line-height: 1.4; }
+
+/* File tree list */
+.sim-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sim-file {
+  font-size: .56rem;
+  color: var(--mu2);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: background .1s, color .1s;
+}
+.sim-file:hover { background: var(--p2); color: var(--tx); }

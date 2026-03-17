@@ -1,0 +1,17 @@
+/* ── SCENARIOS ── */
+.slist{padding:7px;display:flex;flex-direction:column;gap:3px}
+.sb{
+background:none;border:1px solid var(--bd);border-radius:6px;
+padding:7px 10px;cursor:pointer;color:var(--tx);
+font-family:'JetBrains Mono',monospace;font-size:.63rem;
+text-align:left;line-height:1.4;transition:border-color .13s,background .13s;
+position:relative;
+}
+.sb:hover{border-color:var(--mu2);background:var(--p2)}
+.sb.on{border-color:var(--acc);color:var(--acc);background:rgba(224,218,196,.05)}
+.sb .l{font-weight:700;display:block}
+.sb .s{color:var(--mu);font-size:.57rem;margin-top:1px;display:block}
+.sb.on .s{color:rgba(224,218,196,.5)}
+/* progress dot */
+.sb-dot{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:0;transition:opacity .2s}
+.sb.on .sb-dot{opacity:1}
