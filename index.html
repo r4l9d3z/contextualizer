@@ -1,22 +1,91 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
 <title>Context Window Visualizer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-:root{
+/* ── DARK THEME (default) ── */
+:root, [data-theme=“dark”] {
 –bg:#07090f; –p1:#0c0e18; –p2:#10131e; –p3:#141828;
 –bd:#1c2138; –bd2:#242b42; –bd3:#2c3450;
 –tx:#b0bcd8; –mu:#3a4260; –mu2:#505878; –acc:#e0dac4;
+
+/* Segment colours */
 –sys:#e05555; –tls:#c8b530; –rag:#48a870; –mem:#32c0a0;
 –mcp:#3898dc; –fil:#5068e0; –usr:#7258dc; –thi:#b838b8;
 –tcl:#e09838; –trs:#40b8b8; –ast:#dc5088;
 –ok:#48a870; –warn:#e09838; –danger:#e05555;
+
+/* Theme-specific chrome colours */
+–gen-bg:#1a1530; –out-bg:#131e30; –lseg-out-bg:#182438;
+–overlay-hover:rgba(255,255,255,.028); –overlay-sel:rgba(255,255,255,.045);
+–divider-col:rgba(255,255,255,.13); –bracket-col:rgba(255,255,255,.38);
+–seg-overlay:rgba(255,255,255,.12); –tc-overlay:rgba(255,255,255,.1);
+–code-bg:rgba(255,255,255,.07);
+
+/* Bubble text */
+–bub-user-tx:#a898e0; –bub-ast-tx:#dc8098; –bub-thi-tx:#b878c8;
+–bub-tcl-tx:#d0a860;  –bub-trs-tx:#60b8b8; –bub-sys-tx:#d88080;
+–bub-gen-tx:rgba(184,56,184,.65);
+
+/* Toggle icon */
+–toggle-icon:“☀”;
+}
+
+/* ── LIGHT THEME ── */
+[data-theme=“light”] {
+–bg:#f0ede6; –p1:#faf9f6; –p2:#f2f0eb; –p3:#e8e5de;
+–bd:#d5d1c8; –bd2:#c4c0b6; –bd3:#b4b0a6;
+–tx:#1e2135; –mu:#9098b4; –mu2:#606888; –acc:#1e2135;
+
+–gen-bg:#ede8f8; –out-bg:#e0e8f6; –lseg-out-bg:#dce8f8;
+–overlay-hover:rgba(0,0,0,.03); –overlay-sel:rgba(0,0,0,.05);
+–divider-col:rgba(0,0,0,.15); –bracket-col:rgba(0,0,0,.3);
+–seg-overlay:rgba(0,0,0,.07); –tc-overlay:rgba(0,0,0,.06);
+–code-bg:rgba(0,0,0,.06);
+
+/* Slightly deeper segment colours for contrast on light bg */
+–sys:#c83838; –tls:#a08c10; –rag:#2a8050; –mem:#189880;
+–mcp:#1470b8; –fil:#2848c8; –usr:#4830b8; –thi:#8818a0;
+–tcl:#b87010; –trs:#189898; –ast:#b82870;
+–ok:#2a8050; –warn:#b87010; –danger:#c83838;
+
+/* Bubble text – darker for readability on light bg */
+–bub-user-tx:#4838a8; –bub-ast-tx:#a02860; –bub-thi-tx:#781890;
+–bub-tcl-tx:#906010;  –bub-trs-tx:#1080a0; –bub-sys-tx:#a02828;
+–bub-gen-tx:rgba(120,40,150,.8);
+
+–toggle-icon:“☾”;
+}
+
+/* Auto-detect system preference when no explicit data-theme set */
+@media (prefers-color-scheme: light) {
+:root:not([data-theme=“dark”]) {
+–bg:#f0ede6; –p1:#faf9f6; –p2:#f2f0eb; –p3:#e8e5de;
+–bd:#d5d1c8; –bd2:#c4c0b6; –bd3:#b4b0a6;
+–tx:#1e2135; –mu:#9098b4; –mu2:#606888; –acc:#1e2135;
+–gen-bg:#ede8f8; –out-bg:#e0e8f6; –lseg-out-bg:#dce8f8;
+–overlay-hover:rgba(0,0,0,.03); –overlay-sel:rgba(0,0,0,.05);
+–divider-col:rgba(0,0,0,.15); –bracket-col:rgba(0,0,0,.3);
+–seg-overlay:rgba(0,0,0,.07); –tc-overlay:rgba(0,0,0,.06);
+–code-bg:rgba(0,0,0,.06);
+–sys:#c83838; –tls:#a08c10; –rag:#2a8050; –mem:#189880;
+–mcp:#1470b8; –fil:#2848c8; –usr:#4830b8; –thi:#8818a0;
+–tcl:#b87010; –trs:#189898; –ast:#b82870;
+–ok:#2a8050; –warn:#b87010; –danger:#c83838;
+–bub-user-tx:#4838a8; –bub-ast-tx:#a02860; –bub-thi-tx:#781890;
+–bub-tcl-tx:#906010;  –bub-trs-tx:#1080a0; –bub-sys-tx:#a02828;
+–bub-gen-tx:rgba(120,40,150,.8);
+–toggle-icon:“☾”;
+}
 }
 
 body{
@@ -24,13 +93,26 @@ font-family:‘JetBrains Mono’,monospace;
 background:var(–bg);color:var(–tx);
 min-height:100vh;display:flex;flex-direction:column;align-items:center;
 padding:28px 14px 56px;
+transition:background .25s,color .25s;
 }
+
+/* ── THEME TOGGLE ── */
+.theme-toggle{
+position:fixed;top:14px;right:16px;z-index:1000;
+background:var(–p1);border:1px solid var(–bd);border-radius:20px;
+padding:4px 10px 4px 8px;cursor:pointer;
+font-family:‘JetBrains Mono’,monospace;font-size:.6rem;
+color:var(–mu2);display:flex;align-items:center;gap:5px;
+transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+.theme-toggle:hover{border-color:var(–mu2);color:var(–tx)}
+.theme-toggle::before{content:var(–toggle-icon);font-size:.85rem;line-height:1}
 
 h1{font-family:‘Syne’,sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2.2rem);color:var(–acc);letter-spacing:-.03em;text-align:center}
 .sub{font-size:.62rem;color:var(–mu);letter-spacing:.16em;text-transform:uppercase;text-align:center;margin:5px 0 26px}
 
 /* ── LAYOUT ── */
-.root{display:grid;grid-template-columns:196px 1fr 296px;gap:14px;width:100%;max-width:1300px;align-items:start}
+.root{display:grid;grid-template-columns:210px 1fr 300px;gap:16px;width:100%;max-width:1360px;align-items:start}
 .pn{background:var(–p1);border:1px solid var(–bd);border-radius:10px;overflow:hidden}
 .ph{padding:9px 13px;border-bottom:1px solid var(–bd);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(–mu);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 
@@ -66,8 +148,8 @@ display:flex;gap:4px;align-items:center;
 
 /* State note */
 .state-note{font-size:.6rem;line-height:1.65;padding:6px 10px;border-radius:5px;margin-bottom:10px;display:flex;align-items:flex-start;gap:7px}
-.state-note.generating{color:#d09030;background:rgba(208,144,48,.08);border:1px solid rgba(208,144,48,.22)}
-.state-note.idle{color:#48a870;background:rgba(72,168,112,.08);border:1px solid rgba(72,168,112,.22)}
+.state-note.generating{color:var(–warn);background:rgba(208,144,48,.08);border:1px solid rgba(208,144,48,.22)}
+.state-note.idle{color:var(–ok);background:rgba(72,168,112,.08);border:1px solid rgba(72,168,112,.22)}
 .sn-icon{flex-shrink:0;margin-top:1px}
 
 /* ── LINEAR BAR ── */
@@ -80,9 +162,8 @@ border:1px solid var(–bd);display:flex;position:relative;background:var(–bg)
 }
 .linbar-divider{
 position:absolute;top:0;bottom:0;width:1px;
-background:rgba(255,255,255,.12);pointer-events:none;z-index:2;
+background:var(–divider-col);pointer-events:none;z-index:2;
 }
-/* Bracket label on divider */
 .linbar-divider-label{
 position:absolute;top:0;bottom:0;left:0;
 pointer-events:none;z-index:3;
@@ -90,7 +171,7 @@ display:flex;align-items:flex-end;padding-bottom:3px;
 }
 .linbar-divider-label span{
 font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;
-color:rgba(255,255,255,.2);padding-left:3px;white-space:nowrap;
+color:var(–divider-col);padding-left:3px;white-space:nowrap;
 }
 
 .lseg{
@@ -98,32 +179,30 @@ height:100%;position:relative;flex-shrink:0;
 transition:width .55s cubic-bezier(.4,0,.2,1);
 cursor:pointer;overflow:hidden;
 }
-.lseg::after{content:’’;position:absolute;inset:0;background:rgba(255,255,255,.12);opacity:0;transition:opacity .13s}
+.lseg::after{content:’’;position:absolute;inset:0;background:var(–seg-overlay);opacity:0;transition:opacity .13s}
 .lseg:hover::after,.lseg.hl::after{opacity:1}
-/* turn-highlight: dims non-selected-turn segments */
 .linbar.turn-active .lseg:not(.in-turn){opacity:.28;transition:opacity .2s,width .55s cubic-bezier(.4,0,.2,1)}
 .linbar.turn-active .lseg.in-turn{outline:0}
-/* selected turn bracket in bar */
 .turn-bracket{
 position:absolute;bottom:0;height:3px;
-background:rgba(255,255,255,.35);pointer-events:none;z-index:4;
+background:var(–bracket-col);pointer-events:none;z-index:4;
 transition:left .55s cubic-bezier(.4,0,.2,1),width .55s cubic-bezier(.4,0,.2,1);
 border-radius:1px;
 }
 .lseg .ll{
 position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
 font-size:.44rem;font-weight:700;text-transform:uppercase;
-color:rgba(0,0,0,.7);white-space:nowrap;pointer-events:none;
+color:rgba(0,0,0,.75);white-space:nowrap;pointer-events:none;
 opacity:0;transition:opacity .12s;
 }
 .lseg:hover .ll,.lseg.hl .ll{opacity:1}
 .lseg-out{
-height:100%;flex-shrink:0;background:#182438;
-border-left:1px dashed rgba(56,152,220,.3);
+height:100%;flex-shrink:0;background:var(–lseg-out-bg);
+border-left:1px dashed rgba(56,152,220,.4);
 display:flex;align-items:center;justify-content:center;cursor:pointer;
 position:relative;
 }
-.lseg-out .ll2{font-size:.46rem;color:rgba(56,152,220,.5);pointer-events:none}
+.lseg-out .ll2{font-size:.46rem;color:var(–mcp);opacity:.6;pointer-events:none}
 .lseg-free{flex:1;background:var(–bg);display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
 .lseg-free span{font-size:.56rem;color:var(–mu);font-style:italic}
 
@@ -170,8 +249,8 @@ border-radius:5px;cursor:pointer;
 padding:3px 2px;transition:background .12s;
 position:relative;
 }
-.trow:hover{background:rgba(255,255,255,.025)}
-.trow.sel{background:rgba(255,255,255,.04);outline:1px solid var(–bd3);outline-offset:0px}
+.trow:hover{background:var(–overlay-hover)}
+.trow.sel{background:var(–overlay-sel);outline:1px solid var(–bd3);outline-offset:0px}
 .trow-left{
 display:flex;flex-direction:column;align-items:flex-end;
 justify-content:center;padding-right:7px;gap:1px;min-width:0;
@@ -199,15 +278,16 @@ font-size:.42rem;font-weight:700;text-transform:uppercase;
 color:rgba(0,0,0,.65);white-space:nowrap;overflow:hidden;
 cursor:pointer;flex-shrink:0;min-width:2px;
 }
-.tc::after{content:’’;position:absolute;inset:0;background:rgba(255,255,255,.1);opacity:0;transition:opacity .12s}
+.tc::after{content:’’;position:absolute;inset:0;background:var(–tc-overlay);opacity:0;transition:opacity .12s}
 .tc:hover::after,.tc.hl::after{opacity:1}
 
 /* Generating chunk */
 .tc-gen{
-flex:1;background:#1a1530;
+flex:1;background:var(–gen-bg);
 border-left:1px dashed rgba(184,56,184,.4);
 display:flex;align-items:center;justify-content:center;
-font-size:.42rem;color:rgba(184,56,184,.7);
+font-size:.42rem;color:var(–thi);
+opacity:.8;
 letter-spacing:.06em;position:relative;overflow:hidden;
 }
 @keyframes shimmer{
@@ -220,13 +300,13 @@ background:repeating-linear-gradient(90deg,transparent 0,transparent 10px,rgba(1
 }
 .tc-gen::after{
 content:’’;position:absolute;top:0;bottom:0;width:40%;
-background:linear-gradient(90deg,transparent,rgba(184,56,184,.12),transparent);
+background:linear-gradient(90deg,transparent,rgba(184,56,184,.15),transparent);
 animation:shimmer 2.4s ease-in-out infinite;
 }
 
 .tc-out{
-flex-shrink:0;background:#131e30;
-border-left:1px dashed rgba(56,152,220,.2);min-width:2px;
+flex-shrink:0;background:var(–out-bg);
+border-left:1px dashed rgba(56,152,220,.25);min-width:2px;
 }
 .tc-free{flex:1;background:var(–bg)}
 /* truncating row */
@@ -345,17 +425,17 @@ cursor:pointer;transition:background .12s;
 .bubble{border-radius:6px;padding:7px 10px;font-size:.63rem;line-height:1.65;margin-bottom:5px;position:relative}
 .bubble:last-child{margin-bottom:0}
 .bubble .bl{font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:3px;display:block}
-.bubble.user{background:rgba(114,88,220,.13);border:1px solid rgba(114,88,220,.25);color:#a898e0}
-.bubble.assistant{background:rgba(220,80,136,.1);border:1px solid rgba(220,80,136,.2);color:#dc8098}
-.bubble.thinking{background:rgba(184,56,184,.09);border:1px solid rgba(184,56,184,.2);color:#b878c8;font-style:italic}
-.bubble.tool-call{background:rgba(224,152,56,.1);border:1px solid rgba(224,152,56,.22);color:#d0a860}
-.bubble.tool-result{background:rgba(64,184,184,.08);border:1px solid rgba(64,184,184,.2);color:#60b8b8}
-.bubble.system{background:rgba(224,85,85,.09);border:1px solid rgba(224,85,85,.2);color:#d88080}
-.bubble.generating{background:rgba(184,56,184,.07);border:1px dashed rgba(184,56,184,.3);color:rgba(184,56,184,.65)}
+.bubble.user{background:rgba(114,88,220,.1);border:1px solid rgba(114,88,220,.22);color:var(–bub-user-tx)}
+.bubble.assistant{background:rgba(220,80,136,.08);border:1px solid rgba(220,80,136,.18);color:var(–bub-ast-tx)}
+.bubble.thinking{background:rgba(184,56,184,.08);border:1px solid rgba(184,56,184,.18);color:var(–bub-thi-tx);font-style:italic}
+.bubble.tool-call{background:rgba(224,152,56,.08);border:1px solid rgba(224,152,56,.2);color:var(–bub-tcl-tx)}
+.bubble.tool-result{background:rgba(64,184,184,.06);border:1px solid rgba(64,184,184,.18);color:var(–bub-trs-tx)}
+.bubble.system{background:rgba(224,85,85,.07);border:1px solid rgba(224,85,85,.18);color:var(–bub-sys-tx)}
+.bubble.generating{background:rgba(184,56,184,.06);border:1px dashed rgba(184,56,184,.28);color:var(–bub-gen-tx)}
 /* Inline code in bubbles */
 .bubble code{
 font-family:‘JetBrains Mono’,monospace;
-background:rgba(255,255,255,.06);border-radius:3px;
+background:var(–code-bg);border-radius:3px;
 padding:1px 4px;font-size:.95em;color:inherit;
 }
 
@@ -390,14 +470,31 @@ pointer-events:none;z-index:9999;display:none;line-height:1.5;max-width:180px;
 @keyframes fadeIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .2s ease both}
 
+@media (prefers-color-scheme: dark) {
+:root:not([data-theme=“light”]) { color-scheme: dark; }
+}
+
+@media(max-width:1180px){
+.root{grid-template-columns:196px 1fr 268px;gap:12px}
+}
 @media(max-width:980px){
 .root{grid-template-columns:1fr}
 .right-pn{position:static;max-height:none}
+}
+@media(max-width:640px){
+body{padding:16px 10px 48px}
+h1{font-size:1.4rem}
+.cw{padding:10px}
+.rp{padding:10px}
 }
 </style>
 
 </head>
 <body>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">
+  <span id="themeLabel">Light mode</span>
+</button>
 
 <h1>Context Window</h1>
 <div class="sub">Structure · ordering · real-world examples · turn by turn</div>
@@ -1677,6 +1774,31 @@ function showTip(e,seg){
   tip.classList.add('show');
 }
 function hideTip(){ document.getElementById('tip').classList.remove('show'); }
+
+/* ════════════════════════════════════════
+   THEME TOGGLE
+   ════════════════════════════════════════ */
+(function(){
+  // Read stored preference or detect system
+  const stored = localStorage.getItem('ctx-theme');
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = stored || (systemDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', initial);
+  updateToggleLabel(initial);
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('ctx-theme', next);
+    updateToggleLabel(next);
+  });
+
+  function updateToggleLabel(theme) {
+    const lbl = document.getElementById('themeLabel');
+    if (lbl) lbl.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+  }
+})();
 
 /* ════════════════════════════════════════
    INIT
