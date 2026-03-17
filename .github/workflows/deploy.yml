@@ -34,10 +34,10 @@ jobs:
       - name: Generate release tag
         id: tag
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          DATE=$(date -u '+%Y%m%d%H%M%S')
-          SHORT_SHA=${GITHUB_SHA::7}
-          TAG="v${VERSION}-${DATE}-${SHORT_SHA}"
+          BASE=$(node -p "require('./package.json').version" | grep -oP '^\d+\.\d+')
+          PATCH=$(git tag --list "v${BASE}.*" | wc -l)
+          VERSION="${BASE}.$((PATCH + 1))"
+          TAG="v${VERSION}"
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
