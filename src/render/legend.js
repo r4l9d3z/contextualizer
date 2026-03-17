@@ -6,7 +6,7 @@ import { selectKey } from '../interactions.js';
 export function renderLegend() {
   const SC = state.SC, HK = state.HK;
   const keys = new Set(['output_budget']);
-  Object.keys(state.SC.infra).forEach(k => keys.add(k));
+  Object.entries(state.SC.infra).forEach(([k, v]) => { if (v) keys.add(k); });
   state.SC.turns.forEach(t => {
     if (t.files)    keys.add('files');
     if (t.user)     keys.add('user');
