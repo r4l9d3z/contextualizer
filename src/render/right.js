@@ -4,9 +4,6 @@ import { PHASES } from '../data/phases.js';
 import { TOTAL } from '../state.js';
 import { infraTok, turnTok, usedTok, truncRisk, turnChunks, fmt, pctStr, uc, isGen } from '../helpers.js';
 import { selectKey, selectTurn } from '../interactions.js';
-import { renderLinbar } from './linbar.js';
-import { renderTurns } from './turns.js';
-import { renderLegend } from './legend.js';
 
 export function renderRight() {
   const SC = state.SC, HK = state.HK, HT = state.HT;
@@ -230,8 +227,7 @@ export function renderSegDetail(panel) {
         <div class="sd-iv">${it.v}</div>
       </div>`).join('')}</div>`;
 
-  panel.getElementById ? panel.getElementById('segBack')?.addEventListener('click', () => selectKey(null))
-    : panel.querySelector('#segBack')?.addEventListener('click', () => selectKey(null));
+  panel.querySelector('#segBack')?.addEventListener('click', () => selectKey(null));
 }
 
 function escHtml(s) {
