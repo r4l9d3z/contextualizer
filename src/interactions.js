@@ -75,7 +75,8 @@ export function hideTip() {
 }
 
 export function initTheme() {
-  const stored = localStorage.getItem('ctx-theme');
+  let stored = null;
+  try { stored = localStorage.getItem('ctx-theme'); } catch(e) {}
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const initial = stored || (systemDark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', initial);
@@ -85,7 +86,7 @@ export function initTheme() {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('ctx-theme', next);
+    try { localStorage.setItem('ctx-theme', next); } catch(e) {}
     updateToggleLabel(next);
   });
 
