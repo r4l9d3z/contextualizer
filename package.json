@@ -1,6 +1,6 @@
 {
   "name": "contextualizer",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "LLM context window simulator — visualize and simulate how AI context windows fill up",
   "scripts": {
     "dev": "vite",
