@@ -82,7 +82,7 @@ export function initTheme() {
   document.documentElement.setAttribute('data-theme', initial);
   updateToggleLabel(initial);
 
-  document.getElementById('themeToggle').addEventListener('click', function() {
+  document.getElementById('themeToggle')?.addEventListener('click', function() {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
