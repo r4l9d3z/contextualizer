@@ -11,9 +11,9 @@ display:flex;gap:4px;align-items:center;
 .tok-pill .util-dot{width:6px;height:6px;border-radius:50%;transition:background .4s;flex-shrink:0}
 
 /* State note */
-.state-note{font-size:.6rem;line-height:1.65;padding:6px 10px;border-radius:5px;margin-bottom:10px;display:flex;align-items:flex-start;gap:7px}
-.state-note.generating{color:var(--warn);background:rgba(208,144,48,.08);border:1px solid rgba(208,144,48,.22)}
-.state-note.idle{color:var(--ok);background:rgba(72,168,112,.08);border:1px solid rgba(72,168,112,.22)}
+.state-note{font-size:.6rem;line-height:1.65;padding:6px 10px;border-radius:5px;margin-bottom:10px;display:none;align-items:flex-start;gap:7px}
+.state-note.generating{display:flex;color:var(--warn);background:rgba(208,144,48,.08);border:1px solid rgba(208,144,48,.22)}
+.state-note.idle{display:flex;color:var(--ok);background:rgba(72,168,112,.08);border:1px solid rgba(72,168,112,.22)}
 .sn-icon{flex-shrink:0;margin-top:1px}
 
 /* ── LINEAR BAR ── */
