@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<title>Contextualizer — LLM Context Window Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/contextualizer/assets/index-Bkgq1q2W.js"></script>
+  <link rel="stylesheet" crossorigin href="/contextualizer/assets/index-c_jG11-U.css">
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">
+  <span id="themeLabel">Light mode</span>
+</button>
+
+<h1>Context Window</h1>
+<div class="sub">Structure · ordering · real-world examples · turn by turn</div>
+
+<div class="root">
+
+  <!-- LEFT: Scenarios + interactive/simulator panels -->
+  <div class="pn" style="display:flex;flex-direction:column;overflow:hidden;">
+    <div class="ph">Scenarios</div>
+    <div class="slist" id="slist" style="flex-shrink:0;"></div>
+
+    <!-- Interactive Build panel -->
+    <div id="ixPanel" style="display:none;border-top:1px solid var(--bd);overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent;">
+      <div id="ixBody"></div>
+    </div>
+
+    <!-- Simulator panel -->
+    <div id="simPanel" style="display:none;border-top:1px solid var(--bd);overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent;">
+      <div id="simBody"></div>
+    </div>
+  </div>
+
+  <!-- CENTER: Visualization -->
+  <div class="pn">
+    <div class="cw">
+      <!-- Status row -->
+      <div class="status">
+        <div class="sc-title" id="scTitle">—</div>
+        <div class="tok-pill">
+          <div class="util-dot" id="utilDot"></div>
+          <b id="tokUsed">0</b>&nbsp;/&nbsp;<b id="tokTotal">128k</b>
+        </div>
+      </div>
+
+      <!-- State note -->
+      <div class="state-note" id="stateNote"></div>
+
+      <!-- Linear bar -->
+      <div class="bar-label">
+        <span>Context window — absolute scale (128k tokens)</span>
+        <span id="infraLabel"></span>
+      </div>
+      <div class="linbar" id="linbar"></div>
+      <div class="lticks" id="lticks"></div>
+      <div class="urow">
+        <div class="ubg"><div class="ufg" id="ufg"></div></div>
+        <div class="upct" id="upct">—</div>
+      </div>
+
+      <!-- Overflow warning -->
+      <div class="overflow" id="overflow">
+        <span>⚠</span>
+        <span>Context near limit — oldest turns (marked ⚠) will be silently dropped. The model loses that history on the next call.</span>
+      </div>
+
+      <!-- Turn stack -->
+      <div class="stack-header">
+        <span class="stack-title">Turn-by-turn structure</span>
+        <span class="stack-hint">click any row → explanation + example</span>
+      </div>
+      <div class="turns" id="turns"></div>
+
+      <!-- Legend -->
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Detail panel (sticky, scrollable) -->
+  <div class="right-pn">
+    <div class="ph">
+      <span id="rpTitle">Token Budget</span>
+      <span id="rpHint" style="font-size:.48rem;font-style:italic;color:var(--mu)">click turn or segment</span>
+    </div>
+    <div class="rp" id="rp"></div>
+  </div>
+
+</div>
+
+<div class="tip" id="tip"></div>
+
+</body>
+</html>
